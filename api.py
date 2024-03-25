@@ -5,13 +5,13 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # app = Flask(__name__,static_folder='backend/build')
 app = Flask(__name__)
 CORS(app)
 
-load_dotenv()
+# load_dotenv()
 # flask_app = os.environ.get('FLASK_APP')
 # flask_env = os.environ.get('FLASK_ENV')
 
@@ -23,11 +23,22 @@ load_dotenv()
 # db_path = os.path.join(current_script_directory, db_filename)
 # print(db_path)
 
-db_filename = 'Login_DB.accdb'
-db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
-# conn_str = os.environ.get('CONN_STR')
+# Build and deploy
+# db_filename = 'Login_DB.accdb'
+# db_path = os.path.join(os.getcwd(), db_filename)
 
-# db_path = r'D:\My Login Project\Login_DB.accdb'
+# Local System
+# db_filename = 'Login_DB.accdb'
+# db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
+
+db_filename = 'Login_DB.accdb'
+
+if os.environ.get('ENV') == 'production':
+    # In production, use the current working directory to locate the database file
+    db_path = os.path.join(os.getcwd(), db_filename)
+else:
+    # In development, use the directory of the script to locate the database file
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
 
 conn_str = (r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};' rf'DBQ={db_path};')
 
