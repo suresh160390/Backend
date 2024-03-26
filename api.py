@@ -50,6 +50,8 @@ def hello():
 @app.route('/login', methods=['POST'])
 # @cross_origin
 def login():
+    # cursor = None
+    # conn = None
     # Login.js File Username & password
     data = request.json    
     username = data.get('username')
@@ -70,6 +72,12 @@ def login():
         print(f'Error: {e}')
         return jsonify({'success': False})
 
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+            
 @app.route('/sigin', methods=['POST'])
 # @cross_origin
 def sigin():
