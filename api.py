@@ -151,30 +151,35 @@ def mail():
         if conn:
             conn.close()
 
-@app.route('/data', methods=['POST'])
+@app.route('/data', methods=['GET','POST'])
 # @cross_origin
 def data():
     # Sigin.js File Username & password & email  
-    try:
-        with pyodbc.connect(conn_str) as conn:
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM Signup')
-            result = cursor.fetchall()            
-            result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
-            if result:
-                return jsonify(result)
-            else:                                
-                return jsonify([])                        
-    except Exception as e:
-        print(f'Error: {e}')
-        return jsonify({'Error': str(e)})
+    if request.method == 'GET':
+        try:
+            with pyodbc.connect(conn_str) as conn:
+                cursor = conn.cursor()
+                cursor.execute('SELECT * FROM Signup')
+                result = cursor.fetchall()            
+                result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
+                if result:
+                    return jsonify(result)
+                else:                                
+                    return jsonify([])                        
+        except Exception as e:
+            print(f'Error: {e}')
+            return jsonify({'Error': str(e)})
     
-    finally:
-        # Close cursor and connection in the finally block to ensure they are closed regardless of exceptions
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
-
+        finally:
+            # Close cursor and connection in the finally block to ensure they are closed regardless of exceptions
+            if cursor:
+                cursor.close()
+            if conn:
+                conn.close()
+    elif request.method == 'POST':
+        pass  
+    else:
+        return jsonify({'Error': 'Unsupported method'})
+    
 if __name__ == '__main__':
     app.run(debug=True)
