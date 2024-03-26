@@ -126,33 +126,33 @@ def mail():
         if conn:
             conn.close()
 
-@app.route('/data', methods=['GET','POST'])
+@app.route('/data', methods=['POST'])
 def data():
     # Sigin.js File Username & password & email  
-    if request.method == 'GET':
-        try:
-            conn = sqlite3.connect(db_path)
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM Signup')
-            result = cursor.fetchall()            
-            result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
-            if result:
-                return jsonify(result)
-            else:                                
-                return jsonify([])                        
-        except Exception as e:
-            # print(f'Error: {e}')
-            return jsonify({'Error': str(e)})
-    
-        finally:            
-            if cursor:
-                cursor.close()
-            if conn:
-                conn.close()
-    elif request.method == 'POST':
-        pass  
-    else:
-        return jsonify({'Error': 'Unsupported method'})
+    # if request.method == 'GET':
+    try:
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM Signup')
+        result = cursor.fetchall()            
+        result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
+        if result:
+            return jsonify(result)
+        else:                                
+            return jsonify([])                        
+    except Exception as e:
+        # print(f'Error: {e}')
+        return jsonify({'Error': str(e)})
+
+    finally:            
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    # elif request.method == 'POST':
+    #     pass  
+    # else:
+    #     return jsonify({'Error': 'Unsupported method'})
     
 if __name__ == '__main__':
     app.run(debug=True)
