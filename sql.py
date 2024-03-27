@@ -49,7 +49,7 @@ def login():
         if conn:
             conn.close()
     
-@app.route('/sigin', methods=['POST'])
+@app.route('/sigin', methods=['POST','PUT'])
 def sigin():
     # Sigin.js File Username & password & email
     data = request.json
