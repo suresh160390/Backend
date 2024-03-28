@@ -111,7 +111,7 @@ def mail():
 
         if result:
             column_names = [column[0] for column in cursor.description]
-            password_index = column_names.index('Password')
+            password_index = column_names.index('password')
             mail_password=result[password_index]       
             email_sender='suresha003@gmail.com'  #'suresha16031990@gmail.com'
             email_password='cjru cepx vvsz fxfg'   # create App password on your gmail Account, Security, 2-Step Verification, App password click & Create
