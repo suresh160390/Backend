@@ -68,10 +68,8 @@ def login():
         return jsonify({'success': False})
 
     finally:
-        if cursor:
+        if 'cursor' in locals() and cursor:
             cursor.close()
-        if conn:
-            conn.close()
     
 @app.route('/sigin', methods=['POST','PUT'])
 def sigin():
