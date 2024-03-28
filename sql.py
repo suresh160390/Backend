@@ -13,7 +13,12 @@ CORS(app)
 
 load_dotenv()
 
-user_name = os.getenv('user_name')
+# user_name = os.getenv('user_name')
+# pass_word = os.getenv('pass_word')
+# db_loc = os.getenv('db_loc')
+# db_name = os.getenv('db_name')
+
+user_name = 'root'
 pass_word = os.getenv('pass_word')
 db_loc = os.getenv('db_loc')
 db_name = os.getenv('db_name')
@@ -45,7 +50,7 @@ def login():
  
     try:        
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Signup WHERE UserName=? AND Password=?', (username, password))
+        cursor.execute('SELECT * FROM "Signup" WHERE UserName=%s AND Password=%s', (username, password))
         result = cursor.fetchone()        
 
         if result is not None:
@@ -73,13 +78,13 @@ def sigin():
 
     try:
         cursor = conn.cursor()       
-        cursor.execute('SELECT * FROM Signup WHERE Username=%s OR Email=%s', (username, email))
+        cursor.execute('SELECT * FROM "Signup" WHERE Username=%s OR Email=%s', (username, email))
         result = cursor.fetchone()
 
         if result:
             return jsonify({'success': False})
         else:                
-            cursor.execute('INSERT INTO Signup (UserName, Password, Email) VALUES (%s, %s, %s)', (username, password, email))
+            cursor.execute('INSERT INTO "Signup" (UserName, Password, Email) VALUES (%s, %s, %s)', (username, password, email))
             conn.commit()
             return jsonify({'success': True})            
     except Exception as e:
@@ -98,7 +103,7 @@ def mail():
     
     try:       
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Signup WHERE Email=%s', (email,))
+        cursor.execute('SELECT * FROM "Signup" WHERE Email=%s', (email,))
         result = cursor.fetchone()
 
         if result:
@@ -142,7 +147,7 @@ def data():
     # if request.method == 'GET':
     try:        
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Signup')
+        cursor.execute('SELECT * FROM "Signup"')
         result = cursor.fetchall()            
         result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
         if result:
