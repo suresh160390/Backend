@@ -1,20 +1,35 @@
-import sqlite3
 from flask import Flask,jsonify,request
 from flask_cors import CORS #,cross_origin 
 from email.message import EmailMessage
 import ssl
 import smtplib
 import os
+import psycopg2
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 CORS(app)
 
-db_filename = 'user.db'
+load_dotenv()
 
-if os.environ.get('ENV') == 'production':    
-    db_path = os.path.join(os.getcwd(), db_filename)
-else:    
-    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
+user_name = os.getenv('user_name')
+pass_word = os.getenv('pass_word')
+db_loc = os.getenv('db_loc')
+db_name = os.getenv('db_name')
+
+conn = psycopg2.connect(
+dbname=db_name,
+user=user_name,
+password=pass_word,
+host=db_loc
+)
+
+
+# if os.environ.get('ENV') == 'production':    
+#     db_path = os.path.join(os.getcwd(), db_filename)
+# else:    
+#     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
 
 
 @app.route('/', methods=['GET'])
@@ -28,8 +43,7 @@ def login():
     username = data.get('username')
     password = data.get('password')
  
-    try:
-        conn = sqlite3.connect(db_path)
+    try:        
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM Signup WHERE UserName=? AND Password=?', (username, password))
         result = cursor.fetchone()        
@@ -58,15 +72,14 @@ def sigin():
     email = data.get('email')
 
     try:
-        conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Signup WHERE Username=? OR Email=?', (username, email))
+        cursor = conn.cursor()       
+        cursor.execute('SELECT * FROM Signup WHERE Username=%s OR Email=%s', (username, email))
         result = cursor.fetchone()
 
         if result:
             return jsonify({'success': False})
         else:                
-            cursor.execute('INSERT INTO Signup (UserName, Password, Email) VALUES (?, ?, ?)', (username, password, email))
+            cursor.execute('INSERT INTO Signup (UserName, Password, Email) VALUES (%s, %s, %s)', (username, password, email))
             conn.commit()
             return jsonify({'success': True})            
     except Exception as e:
@@ -74,10 +87,8 @@ def sigin():
         return jsonify({'success': False})
     
     finally:        
-        if cursor:
+        if 'cursor' in locals() and cursor:
             cursor.close()
-        if conn:
-            conn.close()
 
 @app.route('/forgot', methods=['POST'])
 def mail():
@@ -85,10 +96,9 @@ def mail():
     data = request.json
     email = data.get('email')
     
-    try:
-        conn = sqlite3.connect(db_path)
+    try:       
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM Signup WHERE Email=?', (email,))
+        cursor.execute('SELECT * FROM Signup WHERE Email=%s', (email,))
         result = cursor.fetchone()
 
         if result:
@@ -123,17 +133,14 @@ def mail():
         return jsonify({'success': False})
     
     finally:        
-        if cursor:
+        if 'cursor' in locals() and cursor:
             cursor.close()
-        if conn:
-            conn.close()
 
 @app.route('/data', methods=['GET','POST'])
 def data():
     # Sigin.js File Username & password & email  
     # if request.method == 'GET':
-    try:
-        conn = sqlite3.connect(db_path)
+    try:        
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM Signup')
         result = cursor.fetchall()            
@@ -147,10 +154,8 @@ def data():
         return jsonify({'Error': str(e)})
 
     finally:            
-        if cursor:
+        if 'cursor' in locals() and cursor:
             cursor.close()
-        if conn:
-            conn.close()
     # elif request.method == 'POST':
     #     pass  
     # else:
