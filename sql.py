@@ -5,23 +5,23 @@ import ssl
 import smtplib
 import os
 import psycopg2
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 
 app = Flask(__name__)
 CORS(app)
 
-user_name='root'
-pass_word='lXROMNKi5j4yXzvFesZipOEihOjWZX4a'
-db_loc='dpg-co2280ocmk4c73ec5or0-a.oregon-postgres.render.com'
-db_name='user_7op1'
+# user_name='root'
+# pass_word='lXROMNKi5j4yXzvFesZipOEihOjWZX4a'
+# db_loc='dpg-co2280ocmk4c73ec5or0-a.oregon-postgres.render.com'
+# db_name='user_7op1'
 
-# load_dotenv()
+load_dotenv()
 
-# user_name = os.getenv('user_name')
-# pass_word = os.getenv('pass_word')
-# db_loc = os.getenv('db_loc')
-# db_name = os.getenv('db_name')
+user_name = os.getenv('user_name')
+pass_word = os.getenv('pass_word')
+db_loc = os.getenv('db_loc')
+db_name = os.getenv('db_name')
 
 # user_name = 'root'
 # pass_word = os.getenv('pass_word')
