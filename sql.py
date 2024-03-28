@@ -11,11 +11,6 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 CORS(app)
 
-# user_name='root'
-# pass_word='lXROMNKi5j4yXzvFesZipOEihOjWZX4a'
-# db_loc='dpg-co2280ocmk4c73ec5or0-a.oregon-postgres.render.com'
-# db_name='user_7op1'
-
 load_dotenv()
 
 user_name = os.getenv('user_name')
@@ -23,18 +18,12 @@ pass_word = os.getenv('pass_word')
 db_loc = os.getenv('db_loc')
 db_name = os.getenv('db_name')
 
-# user_name = 'root'
-# pass_word = os.getenv('pass_word')
-# db_loc = os.getenv('db_loc')
-# db_name = os.getenv('db_name')
-
 conn = psycopg2.connect(
 dbname=db_name,
 user=user_name,
 password=pass_word,
 host=db_loc
 )
-
 
 # if os.environ.get('ENV') == 'production':    
 #     db_path = os.path.join(os.getcwd(), db_filename)
@@ -153,7 +142,7 @@ def data():
         cursor.execute('SELECT * FROM "Signup"')
         result = cursor.fetchall()                  
         result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
-        print(result)  
+        # print(result)  
         if result:
             return jsonify(result)
         else:                                
@@ -164,11 +153,7 @@ def data():
 
     finally:            
         if 'cursor' in locals() and cursor:
-            cursor.close()
-    # elif request.method == 'POST':
-    #     pass  
-    # else:
-    #     return jsonify({'Error': 'Unsupported method'})
+            cursor.close()    
     
 if __name__ == '__main__':
     app.run(debug=True)
