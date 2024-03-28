@@ -5,23 +5,28 @@ import ssl
 import smtplib
 import os
 import psycopg2
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
 app = Flask(__name__)
 CORS(app)
 
-load_dotenv()
+user_name='root'
+pass_word='lXROMNKi5j4yXzvFesZipOEihOjWZX4a'
+db_loc='dpg-co2280ocmk4c73ec5or0-a.oregon-postgres.render.com'
+db_name='user_7op1'
+
+# load_dotenv()
 
 # user_name = os.getenv('user_name')
 # pass_word = os.getenv('pass_word')
 # db_loc = os.getenv('db_loc')
 # db_name = os.getenv('db_name')
 
-user_name = 'root'
-pass_word = os.getenv('pass_word')
-db_loc = os.getenv('db_loc')
-db_name = os.getenv('db_name')
+# user_name = 'root'
+# pass_word = os.getenv('pass_word')
+# db_loc = os.getenv('db_loc')
+# db_name = os.getenv('db_name')
 
 conn = psycopg2.connect(
 dbname=db_name,
@@ -48,7 +53,7 @@ def login():
     username = data.get('username')
     password = data.get('password')
  
-    try:        
+    try:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM "Signup" WHERE UserName=%s AND Password=%s', (username, password))
         result = cursor.fetchone()        
@@ -148,8 +153,9 @@ def data():
     try:        
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM "Signup"')
-        result = cursor.fetchall()            
+        result = cursor.fetchall()                  
         result = [dict(zip([column[0] for column in cursor.description], row)) for row in result]                       
+        print(result)  
         if result:
             return jsonify(result)
         else:                                
