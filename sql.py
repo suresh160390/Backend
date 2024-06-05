@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,request
+from flask import Flask,jsonify,request,send_from_directory
 from flask_cors import CORS #,cross_origin 
 from email.message import EmailMessage
 import ssl
@@ -8,7 +8,7 @@ import psycopg2
 from dotenv import load_dotenv
 
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder='build',static_url_path='/')
 CORS(app)
 
 load_dotenv()
@@ -30,10 +30,17 @@ host=db_loc
 # else:    
 #     db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), db_filename)
 
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/', methods=['GET'])
-def hello():
-    return jsonify({"responce": "This is MyApp"})
+# @app.route('/', methods=['GET'])
+# def hello():
+#     return jsonify({"responce": "This is MyApp"})
+
+@app.route('/<path:path>')
+def static_proxy(path):
+    return send_from_directory(app.static_folder, path)
 
 @app.route('/login', methods=['POST'])
 def login():    
