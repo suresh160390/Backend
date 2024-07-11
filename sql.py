@@ -162,54 +162,58 @@ def data():
         if 'cursor' in locals() and cursor:
             cursor.close()   
 
-# user_name = 'root'
-# pass_word = '0fLj9dLurXT3aOJyP1FPMtuyMm68a1ll'
-# db_loc = 'dpg-cq7q6vmehbks73942220-a.oregon-postgres.render.com'
-# db_name = 'suresh'
+# Update Query
+    # cursor.execute('UPDATE "Signup" SET Email = %s WHERE UserName = %s', ('suresha003@gmail.com', 'suresh'))
 
-# conn = psycopg2.connect(
-# dbname=db_name,
-# user=user_name,
-# password=pass_word,
-# host=db_loc
-# )
+# Create Teble
+    # user_name = 'root'
+    # pass_word = '0fLj9dLurXT3aOJyP1FPMtuyMm68a1ll'
+    # db_loc = 'dpg-cq7q6vmehbks73942220-a.oregon-postgres.render.com'
+    # db_name = 'suresh'
+    
+    # conn = psycopg2.connect(
+    # dbname=db_name,
+    # user=user_name,
+    # password=pass_word,
+    # host=db_loc
+    # )
+    
+    # cur = conn.cursor()
+    
+    # create_table_query = '''CREATE TABLE "Signup"(
+    #                      id SERIAL PRIMARY KEY,
+    #                     Username VARCHAR(50),
+    #                     Password VARCHAR(50),
+    #                     Email VARCHAR(50));'''
+    
+    # cur.execute(create_table_query)
+    
+    # print("Table created successfully")
+    
+    # conn.commit()
+    
+    # cur.close()
+    # conn.close()
 
-# cur = conn.cursor()
-
-# create_table_query = '''CREATE TABLE "Signup"(
-#                      id SERIAL PRIMARY KEY,
-#                     Username VARCHAR(50),
-#                     Password VARCHAR(50),
-#                     Email VARCHAR(50));'''
-
-# cur.execute(create_table_query)
-
-# print("Table created successfully")
-
-# conn.commit()
-
-# cur.close()
-# conn.close()
-
-
-# conn = psycopg2.connect(
-# dbname='suresh',
-# user='root',
-# password='0fLj9dLurXT3aOJyP1FPMtuyMm68a1ll',
-# host='dpg-cq7q6vmehbks73942220-a.oregon-postgres.render.com'
-# )
-
-# cursor = conn.cursor()
-# # insert_data_query = '''INSERT INTO "Signup" (Username, Password, Email) VALUES (%s, %s, %s)'''
-# cursor.execute('INSERT INTO "Signup" (UserName, Password, Email) VALUES (%s, %s, %s)', ('suresh', 'suresh@123', 'suresh003@gmail.com'))
-# # data = ('loga', 'loga@123', 'loga003@gmail.com')
-# # cursor.execute(insert_data_query, data)
-# print("Data inserted successfully")
-
-# conn.commit()
-
-# cursor.close()
-# conn.close()
+# Insert Data for Table
+    # conn = psycopg2.connect(
+    # dbname='suresh',
+    # user='root',
+    # password='0fLj9dLurXT3aOJyP1FPMtuyMm68a1ll',
+    # host='dpg-cq7q6vmehbks73942220-a.oregon-postgres.render.com'
+    # )
+    
+    # cursor = conn.cursor()
+    # # insert_data_query = '''INSERT INTO "Signup" (Username, Password, Email) VALUES (%s, %s, %s)'''
+    # cursor.execute('INSERT INTO "Signup" (UserName, Password, Email) VALUES (%s, %s, %s)', ('suresh', 'suresh@123', 'suresh003@gmail.com'))
+    # # data = ('loga', 'loga@123', 'loga003@gmail.com')
+    # # cursor.execute(insert_data_query, data)
+    # print("Data inserted successfully")
+    
+    # conn.commit()
+    
+    # cursor.close()
+    # conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
